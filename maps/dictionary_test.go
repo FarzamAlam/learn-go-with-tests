@@ -35,9 +35,9 @@ func TestAdd(t *testing.T) {
 	t.Run("Test Update : ", func(t *testing.T) {
 		word := "test"
 		definition := "this is a test"
-		err := dictionary.Add(word, definition)
-		want := ErrExists
-		if err != ErrExists {
+		err := dictionary.Update(word, definition)
+		want := ErrDoesNotExists
+		if err == want {
 			t.Errorf("got %v while want %v", err, want)
 		}
 	})
