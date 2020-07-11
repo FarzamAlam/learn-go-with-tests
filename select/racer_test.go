@@ -36,6 +36,14 @@ func TestRacer(t *testing.T) {
 			t.Errorf("expected nil but got %v : ", err)
 		}
 	})
+	t.Run("Check default timeout : ", func(t *testing.T) {
+		server := makeDelayedServer(25 * time.Millisecond)
+		defer server.Close()
+		_, err := ConfigurableRacer(server.URL, server.URL, time.Microsecond)
+		if err == nil {
+			t.Errorf("Expected nil but got %v : ", err)
+		}
+	})
 }
 
 func makeDelayedServer(delay time.Duration) *httptest.Server {
