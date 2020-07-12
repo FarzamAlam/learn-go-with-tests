@@ -7,6 +7,19 @@ import (
 	"testing"
 )
 
+func TestStoreWins(t *testing.T) {
+	store := StubPlayerStore{
+		map[string]int{},
+	}
+	server := &PlayerServer{&store}
+	t.Run("It returns accepted on POST : ", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/players/Pepper", nil)
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+		assertResponseCode(t, response.Code, http.StatusAccepted)
+	})
+}
+
 func TestGetPlayers(t *testing.T) {
 	store := StubPlayerStore{
 		map[string]int{
@@ -33,6 +46,21 @@ func TestGetPlayers(t *testing.T) {
 		want := "10"
 		assertResponseBody(t, got, want)
 	})
+	t.Run("returns 404 on missing players ", func(t *testing.T) {
+		request, _ := newRequest("Apollo")
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, request)
+
+		got := response.Code
+		want := 404
+		assertResponseCode(t, got, want)
+	})
+}
+func assertResponseCode(t *testing.T, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %d while want %d", got, want)
+	}
 }
 
 func assertResponseBody(t *testing.T, got, want string) {
