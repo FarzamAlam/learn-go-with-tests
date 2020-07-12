@@ -8,11 +8,18 @@ import (
 )
 
 func TestGetPlayers(t *testing.T) {
+	store := StubPlayerStore{
+		map[string]int{
+			"Pepper": 20,
+			"Floyd":  10,
+		},
+	}
+	server := &PlayerServer{&store}
 	t.Run("Returns Pepper's Score : ", func(t *testing.T) {
 		request, _ := newRequest("Pepper")
 		response := httptest.NewRecorder()
 
-		PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 		got := response.Body.String()
 		want := "20"
 		assertResponseBody(t, got, want)
@@ -21,7 +28,7 @@ func TestGetPlayers(t *testing.T) {
 		request, _ := newRequest("Floyd")
 		response := httptest.NewRecorder()
 
-		PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 		got := response.Body.String()
 		want := "10"
 		assertResponseBody(t, got, want)
@@ -29,6 +36,7 @@ func TestGetPlayers(t *testing.T) {
 }
 
 func assertResponseBody(t *testing.T, got, want string) {
+	t.Helper()
 	if got != want {
 		t.Errorf("got %q while want %q ", got, want)
 	}
