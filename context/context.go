@@ -1,17 +1,17 @@
 package context
 
 import (
+	"context"
 	"net/http"
 )
 
 type Store interface {
-	Fetch() string
-	Cancel()
+	Fetch(context context.Context) (string, error)
 }
 
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		store.Cancel()
-		w.Write([]byte(store.Fetch()))
+		data, _ := store.Fetch(r.Context())
+		w.Write([]byte(data))
 	}
 }
