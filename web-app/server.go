@@ -22,6 +22,7 @@ func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
 	return 123
 }
 
+// ServeHTTP function is used to get the score and write on the reponse message.
 func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	player := strings.TrimPrefix(r.URL.Path, "/players/")
 	score := p.store.GetPlayerScore(player)
