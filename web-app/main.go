@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	handler := http.HandlerFunc(PlayerServer)
+	server := &PlayerServer{}
 	port := "5000"
 	log.Println("Starting server at :", port)
-	http.ListenAndServe(":"+port, handler)
+	http.ListenAndServe(":"+port, server)
 }
