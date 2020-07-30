@@ -45,6 +45,10 @@ func TestGETPlayers(t *testing.T) {
 	})
 }
 
+func TestStoreWins(t *testing.T) {
+
+}
+
 func assertResponseCode(t *testing.T, got, want int) {
 	t.Helper()
 	if got != want {

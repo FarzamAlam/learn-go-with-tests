@@ -7,6 +7,7 @@ import (
 
 type InMemoryPlayerStore struct{}
 
+// GetPlayerScore
 func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
 	return 123
 }
